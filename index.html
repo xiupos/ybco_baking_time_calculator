@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YBCO baking time calculator</title>
+    <!-- Centered viewport --> 
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css"
+    />
+  </head>
+  <body>
+    <main>
+      <h1>YBCO Baking Time Calculator</h1>
+
+      <form>
+        <fieldset>
+          <label>
+            Start: <input type="datetime-local" id="start" />
+          </label>
+          <label>
+            End: <input type="datetime-local" id="end" />
+          </label>
+          <label>
+            Scheduled baking time: <input type="time" id="sch" value="03:00:00.000"/>
+          </label>
+        </fieldset>
+        <input type="button" id="button" value="Calculate" />
+      </form>
+
+      <article>
+        <h2>Remaining time</h2>
+        <p>Result: <mark id="result"></mark></p>
+      </article>
+    </main>
+
+    <script>
+      const button = document.getElementById("button");
+      const start = document.getElementById("start");
+      const end = document.getElementById("end");
+      const sch = document.getElementById("sch");
+      const result = document.getElementById("result");
+
+      start.value = new Date().toISOString().slice(0, -1);
+      end.value = new Date().toISOString().slice(0, -1);
+
+      button.addEventListener("click", () => {
+        start_time = new Date(start.value);
+        end_time = new Date(end.value);
+        const a = sch.value.split(":");
+        sch_ms = ((+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])) * 1000;
+
+        result.innerText =
+          String(
+            (end_time - start_time - sch_ms) /
+              (60 * 60 * 1000)
+          ) + "h";
+      });
+    </script>
+  </body>
+</html>
